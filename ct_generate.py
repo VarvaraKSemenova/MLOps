@@ -3,6 +3,10 @@ from pyspark.mllib.random import RandomRDDs
 from pyspark.sql.functions import col, monotonically_increasing_id, udf
 from pyspark.sql.types import ArrayType, IntegerType, StructType
 
+"""
+Generate customers and terminals
+"""
+
 n_items_customer = 5  # x_customer_id, y_customer_id, mean_amount, std_amount, mean_nb_tx_per_day
 n_items_terminal = 2  # x_terminal_id, y_terminal_id
 r_available = 5
@@ -56,5 +60,5 @@ udf_get_available = udf(get_available, ArrayType(IntegerType()))
 
 customer_list = customer_list.withColumn('available_terminals',
                                          udf_get_available(col('x_customer_id'), col('y_customer_id')))
-#print('\n\n\n\n', customer_list, customer_list.count())
+
 customer_list.write.parquet('customer_list')
