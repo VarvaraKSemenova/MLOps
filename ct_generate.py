@@ -58,6 +58,7 @@ def get_available(x, y):
 
 udf_get_available = udf(get_available, ArrayType(IntegerType()))
 
+
 customer_list = customer_list.withColumn('available_terminals',
                                          udf_get_available(col('x_customer_id'), col('y_customer_id')))
 
