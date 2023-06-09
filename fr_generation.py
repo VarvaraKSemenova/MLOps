@@ -5,7 +5,7 @@ from pyspark.sql.functions import col, from_unixtime, floor, udf, lit, \
 from pyspark.sql.types import StructType, TimestampType, IntegerType, StructField, DoubleType
 
 """
-Generate and mark fraude transactions 
+Generate and mark fraud transactions 
 """
 
 spark = SparkSession.builder.appName("generate-transactions").getOrCreate()
