@@ -29,6 +29,7 @@ transactions = spark.createDataFrame(
         StructField('TX_TIME_DAYS', IntegerType(), False)
     ])
 )
+
 transactions.write.csv('transactions_list', mode='overwrite')
 counter = 0
 n_customer = len(customer_collect)
