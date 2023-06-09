@@ -7,8 +7,10 @@ import math
 from datetime import datetime
 import gc
 
-# TX_DATETIME, CUSTOMER_ID, TERMINAL_ID, TX_AMOUNT, TX_TIME_SECONDS, TX_TIME_DAYS
-# CUSTOMER_ID, x_customer_id, y_customer_id, mean_amount, std_amount, mean_nb_tx_per_day, available_terminals
+"""
+Generate transactions
+"""
+
 n_days = 2000 * 91
 start_time = round(datetime(2021, 12, 7).timestamp())
 spark = SparkSession.builder.appName("generate-transactions").getOrCreate()
