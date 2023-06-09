@@ -47,6 +47,30 @@ n_days = transaction_list.select('TX_TIME_DAYS').rdd.max()[0]
 n_compr_terminals = 2
 n_compr_customers = 2
 
+# Generate compromised terminals
+# compromised_terminals_list = RandomRDDs.uniformVectorRDD(
+#     spark.sparkContext, n_days, n_compr_terminals
+# ).map(
+#         lambda a: a.tolist()
+# ).toDF()
+# 
+# compromised_terminals_list = compromised_terminals_list.withColumn(
+#     '_1', floor(col('_1') / weight_terminals)
+# ).withColumn(
+#     '_2', floor(col('_2') / weight_terminals)
+# ).withColumnRenamed('_1', 'ter_1').withColumnRenamed('_2', 'ter_2').withColumn(
+#     'ter_2', when(col('ter_1') == col('ter_2'), col('ter_2')+lit(1)).otherwise(col('ter_2'))
+# ).withColumn(
+#     'ter_1', udf_get_terminal(col('ter_1'))
+# ).withColumn(
+#     'ter_2', udf_get_terminal(col('ter_2'))
+# ).withColumn(
+#     'id_n', monotonically_increasing_id()
+# ).withColumn('day', row_number().over(window=Window.orderBy('id_n'))).drop('id_n')
+#
+# compromised_terminals_list.write.csv('compromised_terminals', mode='overwrite', header='True')
+
+
 # Get list of compromised terminals
 compromised_terminals_list = spark.read.csv('/user/dataproc-agent/compromised_terminals',  header='True')
 
@@ -59,6 +83,29 @@ compromised_terminals_list = compromised_terminals_list.withColumn(
 ).withColumn(
     'ndays', explode(col('ndays'))
 ).withColumn('day', col('day') + col('ndays')).drop('ndays')
+
+# Generate compromised customers
+# compromised_customers_list = RandomRDDs.uniformVectorRDD(
+#     spark.sparkContext, n_days, n_compr_customers
+# ).map(
+#         lambda a: a.tolist()
+# ).toDF()
+#
+# compromised_customers_list = compromised_customers_list.withColumn(
+#     '_1', floor(col('_1') / weight_customer)
+# ).withColumn(
+#     '_2', floor(col('_2') / weight_customer)
+# ).withColumnRenamed('_1', 'cust_1').withColumnRenamed('_2', 'cust_2').withColumn(
+#     'cust_2', when(col('cust_1') == col('cust_2'), col('cust_2')+lit(1)).otherwise(col('cust_2'))
+# ).withColumn(
+#     'cust_1', udf_get_terminal(col('cust_1'))
+# ).withColumn(
+#     'cust_2', udf_get_terminal(col('cust_2'))
+# ).withColumn(
+#     'id_n', monotonically_increasing_id()
+# ).withColumn('day', row_number().over(window=Window.orderBy('id_n'))).drop('id_n')
+#
+# compromised_customers_list.write.csv('compromised_customers', mode='overwrite', header='True')
 
 # Get list of compromised customers
 compromised_customers_list = spark.read.csv('/user/dataproc-agent/compromised_customers',  header='True')
